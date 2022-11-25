@@ -1,0 +1,15 @@
+{
+    "name": "yc/test-php-storm",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "6-ON",
+            "email": "aminhatim6@gmail.com"
+        }
+    ],
+    "require": {}
+}
