@@ -1,9 +1,10 @@
 <?php
 ?>
+<h1>Contact us</h1>
 
 <form method="post">
     <div class="mb-3">
-        <label for="name" class="form-label">Email address</label>
+        <label for="name" class="form-label">Name</label>
         <input type="text" name="name" class="form-control" id="name" placeholder="John">
     </div>
     <div class="mb-3">
