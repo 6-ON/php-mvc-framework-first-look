@@ -10,6 +10,7 @@ class Application
     public Request $request;
     public Response $response;
     public static string $ROOT_DIR;
+    public Controller $controller;
 
     public function __construct($rootPath)
     {
