@@ -27,18 +27,18 @@ class Field
         $this->type = self::TYPE_TEXT;
     }
 
-    public function passwordField()
+    public function passwordField(): Field
     {
         $this->type = self::TYPE_PASSWORD;
         return $this;
     }
 
-    public function emailField()
+    public function emailField(): Field
     {
         $this->type = self::TYPE_EMAIL;
         return $this;
     }
-    public function numberField()
+    public function numberField(): Field
     {
         $this->type = self::TYPE_NUMBER;
         return $this;
