@@ -53,7 +53,7 @@ class Field
                <input type="%s" name="%s" value="%s" class="form-control %s">
                <div class="invalid-feedback">%s</div>
            </div>
-           ', $this->attr,
+           ', $this->model->getLabel($this->attr),
             $this->type,
             $this->attr,
             $this->model->{$this->attr},

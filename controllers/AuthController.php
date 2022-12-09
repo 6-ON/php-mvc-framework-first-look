@@ -2,37 +2,47 @@
 
 namespace app\controllers;
 
+use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
-use app\models\RegisterModel;
+use app\core\Response;
+use app\models\LoginForm;
+use app\models\User;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request,Response $response)
     {
-        if ($request->isPost()) {
-            return "Handling Login";
-        }
+        $loginForm = new LoginForm();
         $this->setLayout('Auth');
-        return $this->render('login');
+        if ($request->isPost()) {
+            $loginForm->loadData($request->getBody());
+            if($loginForm->validate()&& $loginForm->login()){
+                    $response->redirect('/');
+                    return;
+            }
+
+        }
+        return $this->render('login',['model'=>$loginForm]);
     }
 
     public function register(Request $request)
     {
-        $registerModel = new RegisterModel();
+        $user = new User();
         $this->setLayout('Auth');
         if ($request->isPost()) {
-            $registerModel->loadData($request->getBody());
-            if ($registerModel->validate() && $registerModel->register()) {
-                return "success";
+            $user->loadData($request->getBody());
+            if ($user->validate() && $user->save()) {
+                Application::$app->session->setFlash('success','Registration Done');
+                Application::$app->response->redirect('/');
             }
             return $this->render('register', [
-                'model' => $registerModel
+                'model' => $user
             ]);
 
         }
         return $this->render('register', [
-            'model' => $registerModel
+            'model' => $user
         ]);
     }
 }
