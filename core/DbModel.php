@@ -29,4 +29,17 @@ abstract class DbModel extends Model
         $stmt->execute();
         return true;
     }
+
+    public function findOne($where)
+    {
+        $tableName = static::tableName();
+        $attributes = array_keys($where);
+        $sql = implode('AND ',array_map(fn($attr)=> "$attr = :$attr" , $attributes));
+        $stmt = self::prepare($sql);
+        foreach ($where as $key => $value){
+            $stmt->bindValue(":$key",$value);
+        }
+        return $stmt->fetchObject(static::class);
+
+    }
 }

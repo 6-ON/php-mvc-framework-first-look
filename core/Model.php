@@ -32,20 +32,20 @@ abstract class Model
                     $ruleName = $rule[0];
                 }
                 if ($ruleName == self::RULE_REQUIRED && !$value) {
-                    $this->addError($attr, self::RULE_REQUIRED);
+                    $this->addRuleError($attr, self::RULE_REQUIRED);
                 }
                 if ($ruleName == self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                    $this->addError($attr, self::RULE_EMAIL);
+                    $this->addRuleError($attr, self::RULE_EMAIL);
                 }
                 if ($ruleName == self::RULE_MIN && strlen($value) < $rule['min']) {
-                    $this->addError($attr, self::RULE_MIN, $rule);
+                    $this->addRuleError($attr, self::RULE_MIN, $rule);
                 }
                 if ($ruleName == self::RULE_MAX && strlen($value) > $rule['max']) {
-                    $this->addError($attr, self::RULE_MAX, $rule);
+                    $this->addRuleError($attr, self::RULE_MAX, $rule);
                 }
                 if ($ruleName == self::RULE_MATCH && $value !== $this->{$rule['match']}) {
                     $rule['match'] = $this->getLabel($rule['match']);
-                    $this->addError($attr, self::RULE_MATCH, $rule);
+                    $this->addRuleError($attr, self::RULE_MATCH, $rule);
                 }
                 if ($ruleName == self::RULE_UNIQUE) {
                     $className = $rule['class'];
@@ -55,7 +55,7 @@ abstract class Model
                     $stmt->execute();
                     $record = $stmt->fetchObject();
                     if ($record) {
-                        $this->addError($attr, self::RULE_UNIQUE, ['field' => $this->getLabel($attr)]);
+                        $this->addRuleError($attr, self::RULE_UNIQUE, ['field' => $this->getLabel($attr)]);
                     }
 
                 }
@@ -72,12 +72,17 @@ abstract class Model
     abstract public function labels(): array;
 
 
-    public function addError(string $attr, string $rule, $params = [])
+    private function addRuleError(string $attr, string $rule, $params = [])
     {
         $message = $this->errorMessages()[$rule] ?? '';
         foreach ($params as $key => $value) {
             $message = str_replace("{{$key}}", $value, $message);
         }
+        $this->errors[$attr][] = $message;
+    }
+
+    public function addError(string $attr, string $message)
+    {
         $this->errors[$attr][] = $message;
     }
 
