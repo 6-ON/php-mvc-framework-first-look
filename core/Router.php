@@ -6,13 +6,15 @@ class Router
     public array $routes = [];
 
     public Request $request;
+    public Response $response;
 
     /**
      * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request,Response $response)
     {
         $this->request = $request;
+        $this->response = $response;
     }
 
 
@@ -44,7 +46,7 @@ class Router
             Application::$app->controller = new $callback[0]();
             $callback[0] = Application::$app->controller;
         }
-        return call_user_func($callback,$this->request,new Response());
+        return call_user_func($callback,$this->request,$this->response);
     }
 
     public function renderView($view,$params = [])

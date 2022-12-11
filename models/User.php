@@ -13,6 +13,7 @@ class User extends DbModel
     public string $email = '';
     public string $password = '';
     public string $passwordConfirm = '';
+    public string $role = '';
 
 
     public function save()
@@ -33,17 +34,17 @@ class User extends DbModel
         ];
     }
 
-    public function tableName(): string
+    public static function tableName(): string
     {
         return 'user';
     }
 
     public function attributes(): array
     {
-        return ['firstName' => 'f_name',
-            'lastName' => 'l_name',
-            'email' => 'email',
-            'password' => 'pswd'];
+        return ['firstName',
+            'lastName',
+            'email',
+            'password'];
     }
 
     public function labels(): array
@@ -55,4 +56,8 @@ class User extends DbModel
             'passwordConfirm' => ' Confirm Password'
         ];
     }
+
+	public function primaryKey(): string {
+        return 'id';    
+	}
 }
