@@ -40,12 +40,16 @@ class Application
 
     public function run()
     {
-        try{
+        try {
             echo $this->router->resolve();
-        }catch (\Exception $exception){
-            echo $exception->getMessage();
+        } catch (\Exception $exception) {
+            self::$app->response->setStatusCode($exception->getCode());
+            echo self::$app->router->renderView('error',
+                ['exception' => $exception
+            ]);
         }
     }
+
     public function login(DbModel $user)
     {
         $this->user = $user;
@@ -54,6 +58,7 @@ class Application
         $this->session->set('user', $pV);
         return true;
     }
+
     public function logout()
     {
         $this->user = null;
