@@ -1,4 +1,5 @@
 <?php
+
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
@@ -10,7 +11,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 
 $config = [
-    'userClass'=> User::class,
+    'userClass' => User::class,
     'db' => [
         'dsn' => $_ENV['DB_DSN'],
         'usr' => $_ENV['DB_USR'],
@@ -31,5 +32,7 @@ $app->router->post('/login', [AuthController::class, 'login']);
 
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
+
+$app->router->get('/profile', [AuthController::class, 'profile']);
 
 $app->run();

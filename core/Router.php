@@ -11,7 +11,7 @@ class Router
     /**
      * @param Request $request
      */
-    public function __construct(Request $request,Response $response)
+    public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
@@ -23,7 +23,7 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
-    public function post($path,$callback)
+    public function post($path, $callback)
     {
         $this->routes['post'][$path] = $callback;
     }
@@ -39,26 +39,34 @@ class Router
             Application::$app->response->setStatusCode(404);
             return $this->renderView('404');
         }
-        if (is_string($callback)){
+        if (is_string($callback)) {
             return $this->renderView($callback);
         }
-        if(is_array($callback)){
-            Application::$app->controller = new $callback[0]();
-            $callback[0] = Application::$app->controller;
+        if (is_array($callback)) {
+
+            /** @var Controller $controller */
+            $controller = new $callback[0]();
+            Application::$app->controller = $controller;
+            $controller->action = $callback[1];
+            $callback[0] = $controller;
+            foreach ($controller->getMiddlewares() as $middleware){
+                $middleware->execute();
+            }
+
+
         }
-        return call_user_func($callback,$this->request,$this->response);
+        return call_user_func($callback, $this->request, $this->response);
     }
 
-    public function renderView($view,$params = [])
+    public function renderView($view, $params = [])
     {
         $layoutContent = $this->renderLayout();
-        $viewContent = $this->renderViewOnly($view,$params);
+        $viewContent = $this->renderViewOnly($view, $params);
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
 
-
-    public function renderViewOnly($view,$params = [])
+    public function renderViewOnly($view, $params = [])
     {
         extract($params);
         ob_start();

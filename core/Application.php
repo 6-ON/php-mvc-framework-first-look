@@ -40,7 +40,11 @@ class Application
 
     public function run()
     {
-        echo $this->router->resolve();
+        try{
+            echo $this->router->resolve();
+        }catch (\Exception $exception){
+            echo $exception->getMessage();
+        }
     }
     public function login(DbModel $user)
     {
