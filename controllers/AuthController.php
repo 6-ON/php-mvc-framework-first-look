@@ -11,6 +11,14 @@ use app\models\User;
 
 class AuthController extends Controller
 {
+    public function logout(Request $request, Response $response)
+    {
+        if ($request->isGet()) {
+            Application::$app->logout();
+            $response->redirect('/');
+        }
+
+    }
     public function login(Request $request, Response $response)
     {
         $loginForm = new LoginForm();

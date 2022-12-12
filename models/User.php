@@ -4,8 +4,9 @@ namespace app\models;
 
 use app\core\DbModel;
 use app\core\Model;
+use app\core\UserModel;
 
-class User extends DbModel
+class User extends UserModel
 {
 
     public string $firstName = '';
@@ -57,7 +58,12 @@ class User extends DbModel
         ];
     }
 
-	public function primaryKey(): string {
+	public static function primaryKey(): string {
         return 'id';    
+	}
+
+	public function getDisplayName() :  string {
+
+        return $this->firstName;
 	}
 }
