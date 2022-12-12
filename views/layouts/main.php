@@ -1,3 +1,12 @@
+<?php
+
+use app\core\Application;
+
+echo '<pre>';
+var_dump(Application::$app->user);
+echo '</pre>';
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -25,6 +34,7 @@
                 </li>
 
             </ul>
+            <?php if(Application::isGuest()){ ?>
             <ul class="navbar-nav ms-auto">
 
                 <li class="nav-item ">
@@ -34,6 +44,17 @@
                     <a class="nav-link" href="/register">Register</a>
                 </li>
             </ul>
+            <?php } else { ?>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile"><?=  Application::$app->user->getDisplayName()  ?></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+            <?php } ?>
+
         </div>
     </div>
 </nav>
